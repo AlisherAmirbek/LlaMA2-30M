@@ -14,7 +14,7 @@ tranformer = Transformer(config)
 tokenizer = SentencePieceProcessor(tokenizer_path)
 optimizer = torch.optim.Adam(tranformer.parameters(), lr=0.0001)
 
-loaded_dataset = torch.load("data/dataset/tokenized_dataset_3_6.pt")
+loaded_dataset = torch.load("path/to/dataset/tokenized_dataset_3_6.pt")
 
 def get_batches(dataset, batch_size):
 
