@@ -8,6 +8,13 @@ This project is a personal desire to replicate and understand the LLaMA2 archite
 
 ## Project Intent and Outcomes
 The primary objective of this project was educational, focusing on the pre-training process of language models. It's important to note that the model's performance is not benchmark competitive. The training process showed progressive reduction in loss, underscoring the learning curve rather than achieving state-of-the-art results. This limitation arises from the dataset's volume; a robust model is likely to be obtained after at least training on 5-10 billion tokens, a resource scale beyond this project's scope.
+### Training Loss Visualization
+
+Below is a graph of the training loss over time:
+
+![Training Loss History](data/train_loss.png)
+
+The blue line represents the actual loss at each batch, while the orange line shows the smoothed training loss, providing a clearer view of the overall trend. As can be seen in the graph, the loss decreases significantly at the beginning of training and then stabilizes, indicating that the model is learning effectively from the training data. Minor fluctuations in the actual loss are normal and reflect the variance in different batches of data.
 
 ## Installation
 
@@ -26,14 +33,6 @@ Install the required packages using `pip`:
 
 ```bash
 pip install -r requirements.txt
-```
-
-### Running the Application
-
-After setting up the environment and installing the dependencies, you can run the application. For example, to run the inference script:
-
-```bash
-python3 inference.py "This is a test prompt." --max_tokens 100
 ```
 
 ## Usage
@@ -55,6 +54,35 @@ python3 inference.py "Tell me a story about space." "Describe your ideal vacatio
 
 This will generate text for each of the given prompts with up to 150 tokens per prompt.
 
+## Training the Model
+
+This section provides instructions on how to train the model using the provided `train.py` script.
+
+Ensure that you have saved tokenized dataset in the pytorch format (.pt).
+
+### Training
+
+To start training the model, run the `train.py` script from the project root directory:
+A
+```bash
+python3 train.py
+```
+
+The script will automatically:
+
+- Load the dataset and tokenizer.
+- Initialize the model and optimizer.
+- Start the training loop, printing loss information and saving model checkpoints periodically.
+
+### Model Checkpoints
+
+During training, the model checkpoints will be saved in the `/model/trained/mini_llama` directory. Each checkpoint includes:
+
+- Model state dictionary.
+- Optimizer state dictionary.
+- Training loss history.
+
+The script also manages checkpoint files by deleting the previous one each time a new checkpoint is saved to conserve disk space.
 
 ## Data Preprocessing for Custom Training Data
 
