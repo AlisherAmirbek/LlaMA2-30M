@@ -27,7 +27,6 @@ class ModelConfig:
     multiple_of: int = 128
     max_batch_size: int = 150  # Maximum batch size for training
     max_seq_len: int = 512  # Maximum sequence length
-
     device: str = 'cuda'  # Device to run the model on (optional)
 
 class RotaryPositionEmbedding(nn.Module):
@@ -259,23 +258,11 @@ class LLaMA:
         return sum(p.numel() for p in self.model.parameters() if p.requires_grad)
 
     @staticmethod
-    def build(checkpoints_dir: str, tokenizer_path: str, load_model: bool, device: str):
+    def build(tokenizer_path: str, device: str, state_dict: Optional[dict] = None):
 
         prev_time = time.time()
 
-        if load_model:
-            checkpoints = sorted(Path(checkpoints_dir).glob("*.pth"))
-            assert len(checkpoints) > 0, "No checkpoints found"
-            chk_path = checkpoints[0]
-            print(f"Loading checkpoint from {chk_path}")
-            checkpoint = torch.load(chk_path, map_location="cuda")
-            print("Loaded Checkpoint in {:.2f}s".format(time.time() - prev_time))
-            prev_time = time.time()
-
-        with open(Path(checkpoints_dir) / "config.json", "r") as f:
-            config = json.load(f)
-
-        model_config = ModelConfig(device=device, **config)
+        model_config = ModelConfig()
 
         tokenizer = SentencePieceProcessor()
         tokenizer.load(tokenizer_path)
@@ -284,10 +271,10 @@ class LLaMA:
 
         model = Transformer(model_config).to(device)
 
-        if load_model:
-            model.load_state_dict(checkpoint['model_state_dict'])
+        if state_dict is not None:
+            model.load_state_dict(state_dict['model_state_dict'])
             print("Loaded Model in {:.2f}s".format(time.time() - prev_time))
-
+            
         return LLaMA(model, tokenizer, model_config)
 
     @staticmethod
