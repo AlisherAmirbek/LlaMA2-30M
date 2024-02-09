@@ -4,7 +4,7 @@ This project is a personal desire to replicate and understand the LLaMA2 archite
 
 **Model Size** : 30 million parameters
 
-**Dataset Size**: pre-trained on a corpus of 500 million tokens. 
+**Dataset Size**: pre-trained on a corpus of 600 million tokens. 
 
 ## Project Intent and Outcomes
 The primary objective of this project was educational, focusing on the pre-training process of language models. It's important to note that the model's performance is not benchmark competitive. The training process showed progressive reduction in loss, underscoring the learning curve rather than achieving state-of-the-art results. This limitation arises from the dataset's volume; a robust model is likely to be obtained after at least training on 5-10 billion tokens, a resource scale beyond this project's scope.
